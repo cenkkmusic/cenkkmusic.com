@@ -1,0 +1,2284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CENKK — Official</title>
+    <meta name="description" content="CENKK — Classically trained countertenor. Electronic music producer. DJ. Releases on Automatik, BAU_HAUS, Multinotes, Radikon, and more.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #000;
+            --bg-elevated: #0a0a0a;
+            --bg-card: #0f0f0f;
+            --text: #e5e5e5;
+            --text-dim: #999;
+            --text-muted: #666;
+            --white: #fff;
+            --border: rgba(255,255,255,0.07);
+            --border-hover: rgba(255,255,255,0.15);
+            --font: 'Inter', -apple-system, system-ui, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        body {
+            font-family: var(--font);
+            font-weight: 300;
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection {
+            background: var(--white);
+            color: var(--bg);
+        }
+
+        a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        a:hover { color: var(--white); }
+
+        img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* ===== NAV ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.8rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.4s ease;
+        }
+        nav.scrolled {
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 1.2rem 3rem;
+        }
+
+        .nav-logo {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.35em;
+            color: var(--white);
+            text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+        .nav-links a {
+            color: var(--text-dim);
+            font-size: 0.7rem;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+        }
+        .nav-links a:hover { color: var(--white); }
+
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 5px;
+        }
+        .nav-toggle span {
+            display: block;
+            width: 22px;
+            height: 1px;
+            background: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 700px;
+            display: flex;
+            align-items: flex-end;
+            overflow: hidden;
+        }
+
+        .hero-image {
+            position: absolute;
+            inset: 0;
+        }
+        .hero-image video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            will-change: transform;
+        }
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 20%;
+            will-change: transform;
+        }
+        .hero-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(0deg, #000 0%, rgba(0,0,0,0.85) 15%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.05) 55%, rgba(0,0,0,0.5) 85%, rgba(0,0,0,0.8) 100%);
+            z-index: 1;
+        }
+
+        #particleCanvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            padding: 0 5vw 6rem;
+            width: 100%;
+        }
+
+        .hero-label {
+            font-size: 0.65rem;
+            font-weight: 400;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeUp 0.8s ease 0.2s forwards;
+            text-shadow: 0 1px 8px rgba(0,0,0,0.6);
+        }
+
+        .hero-title {
+            font-size: clamp(4rem, 10vw, 9rem);
+            font-weight: 300;
+            letter-spacing: -0.03em;
+            line-height: 0.85;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeUp 0.8s ease 0.4s forwards;
+        }
+
+        .hero-logo {
+            width: clamp(260px, 38vw, 480px);
+            height: auto;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeUp 0.8s ease 0.4s forwards;
+        }
+
+        .hero-subtitle {
+            font-size: 0.95rem;
+            font-weight: 300;
+            color: rgba(255,255,255,0.75);
+            max-width: 440px;
+            line-height: 1.8;
+            opacity: 0;
+            animation: fadeUp 0.8s ease 0.6s forwards;
+            text-shadow: 0 1px 8px rgba(0,0,0,0.6);
+        }
+
+        /* ===== SECTIONS ===== */
+        section {
+            padding: 7rem 5vw;
+        }
+
+        .section-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-size: 0.6rem;
+            font-weight: 500;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            color: var(--white);
+            margin-bottom: 3rem;
+        }
+
+        /* ===== BIO ===== */
+        .bio {
+            border-top: 1px solid var(--border);
+        }
+
+        .bio-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: start;
+        }
+
+        .bio-text p {
+            color: var(--text-dim);
+            font-size: 0.92rem;
+            margin-bottom: 1.3rem;
+            line-height: 1.8;
+        }
+        .bio-text p:first-of-type {
+            font-size: 1.05rem;
+            color: var(--text);
+        }
+
+        .bio-stats {
+            display: flex;
+            gap: 3rem;
+            margin-top: 2.5rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--white);
+            line-height: 1;
+        }
+        .stat-label {
+            font-size: 0.62rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-top: 0.4rem;
+        }
+
+        .bio-image {
+            position: relative;
+            aspect-ratio: 3/4;
+            background: var(--bg-card);
+            overflow: hidden;
+        }
+
+        /* ===== MUSIC ===== */
+        .releases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1px;
+            background: var(--border);
+        }
+
+        .release-card {
+            background: var(--bg);
+            padding: 0;
+            transition: background 0.3s ease;
+            overflow: hidden;
+        }
+        .release-card:hover {
+            background: var(--bg-elevated);
+        }
+
+        .release-artwork {
+            width: 100%;
+            aspect-ratio: 1;
+            overflow: hidden;
+            position: relative;
+        }
+        .release-artwork img {
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .release-card:hover .release-artwork img {
+            transform: scale(1.03);
+        }
+
+        .release-info {
+            padding: 1.2rem 1.5rem 1.5rem;
+        }
+
+        .release-year {
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .release-title {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--white);
+            margin-bottom: 0.2rem;
+        }
+
+        .release-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .release-links {
+            display: flex;
+            gap: 1rem;
+        }
+        .release-links a {
+            font-size: 0.62rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            transition: color 0.3s ease;
+        }
+        .release-links a:hover {
+            color: var(--white);
+        }
+
+        .music-platforms {
+            margin-top: 3rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .platform-label {
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-right: 0.5rem;
+        }
+
+        .platform-link {
+            font-size: 0.72rem;
+            font-weight: 400;
+            color: var(--text-dim);
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        .platform-link:hover {
+            color: var(--white);
+            border-color: var(--border-hover);
+        }
+
+        /* ===== SHOWS ===== */
+        .shows {
+            border-top: 1px solid var(--border);
+        }
+
+        .shows-group-label {
+            font-size: 0.6rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--white);
+            margin-top: 2.5rem;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--white);
+        }
+        .shows-group-label:first-of-type {
+            margin-top: 0;
+        }
+        .shows-year-label {
+            font-size: 0.55rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-top: 2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .show-item {
+            display: grid;
+            grid-template-columns: 100px 1fr auto;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .show-date {
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            font-weight: 400;
+            line-height: 1.3;
+        }
+
+        .show-event {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+            line-height: 1.3;
+        }
+        .show-venue {
+            font-size: 0.92rem;
+            font-weight: 400;
+            color: var(--white);
+        }
+        .show-city {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.15rem;
+        }
+
+        .show-status {
+            font-size: 0.55rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            padding: 0.35rem 0.8rem;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+        .show-status.upcoming {
+            border-color: var(--white);
+            color: var(--white);
+        }
+        .show-status.sold-out {
+            border-color: var(--text-dim);
+            color: var(--text-dim);
+        }
+
+        a.show-item {
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+        a.show-item:hover {
+            background: var(--bg-elevated);
+        }
+        a.show-item:hover .show-status.upcoming {
+            background: var(--white);
+            color: var(--bg);
+        }
+
+        .shows-note {
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .shows-ra-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.2rem;
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .shows-ra-link:hover {
+            color: var(--white);
+            border-color: var(--white);
+        }
+
+        /* ===== GALLERY (Horizontal Filmstrip) ===== */
+        #gallery {
+            padding-bottom: 4rem;
+        }
+        #gallery .section-inner {
+            max-width: none;
+            padding: 0 5vw;
+        }
+        .gallery-scroll-wrapper {
+            position: relative;
+            margin: 0 -5vw;
+            overflow: hidden;
+        }
+        .gallery-grid {
+            display: flex;
+            gap: 3px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 0 5vw;
+            cursor: grab;
+        }
+        .gallery-grid:active {
+            cursor: grabbing;
+        }
+        .gallery-grid::-webkit-scrollbar { display: none; }
+
+        .gallery-item {
+            position: relative;
+            flex: 0 0 auto;
+            height: 55vh;
+            min-height: 350px;
+            max-height: 600px;
+            background: var(--bg-card);
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .gallery-item img {
+            height: 100%;
+            width: auto;
+            min-width: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        .gallery-item.tall {
+            aspect-ratio: 3/4;
+        }
+        .gallery-item.wide {
+            aspect-ratio: 16/9;
+        }
+        .gallery-item:not(.tall):not(.wide) {
+            aspect-ratio: 1;
+        }
+        .gallery-nav {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            padding: 0 5vw;
+        }
+        .gallery-nav button {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border);
+            background: none;
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: var(--font);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .gallery-nav button:hover {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        /* ===== LIGHTBOX ===== */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            align-items: center;
+            justify-content: center;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox-img {
+            max-width: 85vw;
+            max-height: 85vh;
+            object-fit: contain;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            border: none;
+            width: auto;
+            height: auto;
+        }
+        .lightbox.active .lightbox-img {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            font-size: 1.5rem;
+            color: var(--text-dim);
+            cursor: pointer;
+            z-index: 201;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s;
+            background: none;
+            border: none;
+            font-family: var(--font);
+        }
+        .lightbox-close:hover { color: var(--white); }
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: var(--text-dim);
+            cursor: pointer;
+            z-index: 201;
+            width: 50px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s;
+            background: none;
+            border: none;
+            font-family: var(--font);
+        }
+        .lightbox-nav:hover { color: var(--white); }
+        .lightbox-prev { left: 1rem; }
+        .lightbox-next { right: 1rem; }
+        .lightbox-counter {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            color: var(--text-muted);
+        }
+
+        /* ===== PRESS ===== */
+        .press {
+            border-top: 1px solid var(--border);
+        }
+
+        .press-quotes {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1px;
+            background: var(--border);
+            margin-bottom: 4rem;
+        }
+
+        .quote-card {
+            background: var(--bg);
+            padding: 2.5rem;
+        }
+
+        .quote-text {
+            font-size: 0.95rem;
+            font-weight: 300;
+            font-style: italic;
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 1.2rem;
+        }
+
+        .quote-source {
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .press-features {
+            margin-bottom: 3rem;
+        }
+        .press-features h3 {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-list {
+            display: grid;
+            gap: 1px;
+            background: var(--border);
+        }
+        .feature-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: var(--bg);
+            transition: background 0.3s ease;
+        }
+        .feature-item:hover {
+            background: var(--bg-elevated);
+        }
+        .feature-item .outlet {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: var(--text);
+        }
+        .feature-item .type {
+            font-size: 0.6rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .epk-download {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.85rem 2rem;
+            border: 1px solid var(--white);
+            color: var(--white);
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .epk-download:hover {
+            background: var(--white);
+            color: var(--bg);
+        }
+
+        /* ===== CONTACT ===== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: var(--border);
+        }
+
+        .contact-block {
+            padding: 2.5rem;
+            background: var(--bg);
+        }
+        .contact-block h3 {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--white);
+            margin-bottom: 0.3rem;
+        }
+        .contact-role {
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 1.2rem;
+        }
+        .contact-detail {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+            margin-bottom: 0.4rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 3rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .social-link {
+            font-size: 0.62rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            transition: color 0.3s ease;
+        }
+        .social-link:hover {
+            color: var(--white);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            padding: 2.5rem 5vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border);
+        }
+        .footer-left {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.3em;
+            color: var(--text-muted);
+        }
+        .footer-right {
+            font-size: 0.62rem;
+            color: var(--text-muted);
+            letter-spacing: 0.08em;
+        }
+
+        /* ===== STICKY MUSIC PLAYER ===== */
+        .music-player {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 150;
+            background: rgba(10,10,10,0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            padding: 0;
+            transform: translateY(100%);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            align-items: center;
+        }
+        .music-player.visible {
+            transform: translateY(0);
+        }
+        .music-player-inner {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+            padding: 0 1.5rem;
+            height: 56px;
+        }
+        .music-player-toggle {
+            background: none;
+            border: none;
+            color: var(--white);
+            cursor: pointer;
+            font-size: 1.2rem;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: opacity 0.3s;
+        }
+        .music-player-toggle:hover { opacity: 0.7; }
+        .music-player-info {
+            flex-shrink: 0;
+            min-width: 0;
+        }
+        .music-player-title {
+            font-size: 0.7rem;
+            font-weight: 400;
+            color: var(--white);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+        }
+        .music-player-artist {
+            font-size: 0.58rem;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        .music-player-waveform {
+            flex: 1;
+            height: 32px;
+            min-width: 0;
+        }
+        .music-player-waveform canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .music-player-time {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            font-variant-numeric: tabular-nums;
+            flex-shrink: 0;
+            letter-spacing: 0.05em;
+        }
+        .music-player-tracks {
+            display: flex;
+            gap: 0.3rem;
+            flex-shrink: 0;
+        }
+        .music-player-track-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.85rem;
+            padding: 4px;
+            transition: color 0.3s;
+        }
+        .music-player-track-btn:hover { color: var(--white); }
+        .music-player-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 4px;
+            margin-left: 0.5rem;
+            flex-shrink: 0;
+            transition: color 0.3s;
+        }
+        .music-player-close:hover { color: var(--white); }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Staggered children */
+        .reveal-stagger > .reveal:nth-child(1) { transition-delay: 0s; }
+        .reveal-stagger > .reveal:nth-child(2) { transition-delay: 0.08s; }
+        .reveal-stagger > .reveal:nth-child(3) { transition-delay: 0.16s; }
+        .reveal-stagger > .reveal:nth-child(4) { transition-delay: 0.24s; }
+        .reveal-stagger > .reveal:nth-child(5) { transition-delay: 0.32s; }
+        .reveal-stagger > .reveal:nth-child(6) { transition-delay: 0.40s; }
+        .reveal-stagger > .reveal:nth-child(7) { transition-delay: 0.48s; }
+        .reveal-stagger > .reveal:nth-child(8) { transition-delay: 0.56s; }
+
+        /* Parallax utility */
+        .parallax-slow { will-change: transform; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            nav { padding: 1.2rem 1.5rem; }
+            nav.scrolled { padding: 1rem 1.5rem; }
+            .nav-links { display: none; }
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.97);
+                backdrop-filter: blur(20px);
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                z-index: 99;
+            }
+            .nav-links.open a {
+                font-size: 1rem;
+                color: var(--white);
+            }
+            .nav-toggle { display: flex; z-index: 101; }
+
+            section { padding: 4.5rem 1.5rem; }
+            .hero-content { padding: 0 1.5rem 4rem; }
+            .bio-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .bio-image { max-height: 500px; }
+            .releases-grid { grid-template-columns: repeat(2, 1fr); }
+            .show-item { grid-template-columns: 90px 1fr; gap: 1rem; }
+            .show-status { display: none; }
+            .gallery-item { height: 40vh; min-height: 250px; }
+            .press-quotes { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr; }
+            footer { flex-direction: column; gap: 0.75rem; text-align: center; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title { font-size: 3rem; }
+            .releases-grid { grid-template-columns: 1fr; }
+            .bio-stats { flex-direction: column; gap: 1.5rem; }
+            .social-links { flex-wrap: wrap; }
+            .lightbox-img { max-width: 95vw; max-height: 80vh; }
+            .lightbox-nav { width: 40px; height: 60px; font-size: 1.2rem; }
+            .lightbox-prev { left: 0.3rem; }
+            .lightbox-next { right: 0.3rem; }
+            .gallery-item { height: 35vh; min-height: 220px; }
+            .music-player-waveform { display: none; }
+            .music-player-title { max-width: 120px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Nav -->
+    <nav id="navbar">
+        <a href="#hero" class="nav-logo">CENKK</a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#bio" onclick="closeNav()">Bio</a></li>
+            <li><a href="#music" onclick="closeNav()">Music</a></li>
+            <li><a href="#shows" onclick="closeNav()">Shows</a></li>
+            <li><a href="#gallery" onclick="closeNav()">Gallery</a></li>
+            <li><a href="#press" onclick="closeNav()">Press</a></li>
+            <li><a href="#contact" onclick="closeNav()">Contact</a></li>
+        </ul>
+        <div class="nav-toggle" id="navToggle" onclick="toggleNav()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="hero">
+        <div class="hero-image">
+            <video autoplay muted loop playsinline id="heroVideo">
+                <source src="Cenkk 5.MP4" type="video/mp4">
+            </video>
+        </div>
+        <canvas id="particleCanvas"></canvas>
+        <div class="hero-content">
+        </div>
+    </section>
+
+    <!-- Bio -->
+    <section class="bio" id="bio">
+        <div class="section-inner">
+            <div class="bio-grid">
+                <div class="bio-text reveal">
+                    <div class="section-label">About</div>
+                    <h2 class="section-title">The Story</h2>
+                    <p>
+                        CENKK is a multidisciplinary musician whose world exists at the intersection of opera and electronic music. Trained as a countertenor, he weaves his voice through cinematic productions that blur the lines between the concert hall and the club.
+                    </p>
+                    <p>
+                        With influences spanning Klaus Nomi to Kraftwerk, Handel to Henze, Cenk Karaferya studied undergraduate and three postgraduate degrees in classical music &mdash; specifically opera &mdash; at London's Guildhall School of Music and Drama. He went on to tour with opera companies across Europe and the United States.
+                    </p>
+                    <p>
+                        When COVID halted live performance, he returned to his roots in dance and film music. As clubs reopened, CENKK re-emerged behind the decks, now armed with a singular fusion of classical training and dancefloor instinct. Having lived in LA, Miami, London, and Berlin, he draws from a rich tapestry of cultures and sounds.
+                    </p>
+                    <p>
+                        His releases on Automatik, BAU_HAUS, Multinotes, Borders of Light, and more have earned support from Solomun, Adriatique, &Acirc;me, CamelPhat, Innellea, Toto Chiavetta, and 8kays. Upcoming releases on Radikon and Black Rose signal an artist continually pushing forward.
+                    </p>
+                    <div class="bio-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">6+</div>
+                            <div class="stat-label">Labels</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4</div>
+                            <div class="stat-label">Cities Called Home</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bio-image reveal">
+                    <img src="IMG_3150.jpg" alt="CENKK portrait">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Music -->
+    <section id="music">
+        <div class="section-inner">
+            <div class="section-label reveal">Discography</div>
+            <h2 class="section-title reveal">Selected Releases</h2>
+
+            <div class="releases-grid reveal-stagger">
+                <div class="release-card reveal">
+                    <div class="release-artwork">
+                        <img src="https://geo-media.beatport.com/image_size/1400x1400/7c943dee-428a-4090-b172-5082a758c4fd.jpg" alt="Freaky People / In Rio">
+                    </div>
+                    <div class="release-info">
+                        <div class="release-year">Dec 2025</div>
+                        <h3 class="release-title">Freaky People / In Rio</h3>
+                        <div class="release-label">Moodyverse</div>
+                        <div class="release-links">
+                            <a href="https://www.beatport.com/release/freaky-people/5631666" target="_blank">Beatport</a>
+                            <a href="https://open.spotify.com/album/4oZXvj1VXOZ2fTKfRk4tpJ" target="_blank">Spotify</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="release-card reveal">
+                    <div class="release-artwork">
+                        <img src="https://geo-media.beatport.com/image_size/1400x1400/ef8ac760-f4a1-4e80-ac3e-8904d5e0fdbc.jpg" alt="Get Together">
+                    </div>
+                    <div class="release-info">
+                        <div class="release-year">Sep 2025</div>
+                        <h3 class="release-title">Get Together</h3>
+                        <div class="release-label">Automatik &middot; w/ Henri Bergmann</div>
+                        <div class="release-links">
+                            <a href="https://www.beatport.com/release/get-together/5312597" target="_blank">Beatport</a>
+                            <a href="https://open.spotify.com/album/0jVG0suPDGpQnrKgdPgCKm" target="_blank">Spotify</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="release-card reveal">
+                    <div class="release-artwork">
+                        <img src="https://geo-media.beatport.com/image_size/1400x1400/94ccf21d-ede4-4fcb-b8ea-b3f49fe08036.jpg" alt="Closer">
+                    </div>
+                    <div class="release-info">
+                        <div class="release-year">May 2025</div>
+                        <h3 class="release-title">Closer (CENKK Rework)</h3>
+                        <div class="release-label">Terranova &middot; Rework of soloiist</div>
+                        <div class="release-links">
+                            <a href="https://www.beatport.com/release/closer/5033024" target="_blank">Beatport</a>
+                            <a href="https://open.spotify.com/album/63yS13j6V64NOZEGYcRApA" target="_blank">Spotify</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="release-card reveal">
+                    <div class="release-artwork">
+                        <img src="https://geo-media.beatport.com/image_size/1400x1400/36ead7a4-d018-4bd6-8e6b-d5a549fca22f.jpg" alt="By My Side">
+                    </div>
+                    <div class="release-info">
+                        <div class="release-year">Aug 2024</div>
+                        <h3 class="release-title">By My Side</h3>
+                        <div class="release-label">Radikon</div>
+                        <div class="release-links">
+                            <a href="https://www.beatport.com/release/nokta-ii-phase-2/4681049" target="_blank">Beatport</a>
+                            <a href="https://open.spotify.com/album/0Ktswf9nySpFW2RxxBa7SP" target="_blank">Spotify</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="release-card reveal">
+                    <div class="release-artwork">
+                        <img src="https://geo-media.beatport.com/image_size/1400x1400/01dc099a-2e1b-4f97-9c38-056d500bc68c.jpg" alt="The Beat">
+                    </div>
+                    <div class="release-info">
+                        <div class="release-year">Jun 2024</div>
+                        <h3 class="release-title">The Beat</h3>
+                        <div class="release-label">Multinotes &middot; VA &ldquo;All Night Long&rdquo;</div>
+                        <div class="release-links">
+                            <a href="https://www.beatport.com/release/all-night-long/4578360" target="_blank">Beatport</a>
+                            <a href="https://open.spotify.com/album/7qUCRIWy6yo3MaRKJUQPlc" target="_blank">Spotify</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="release-card reveal">
+                    <div class="release-artwork">
+                        <img src="https://geo-media.beatport.com/image_size/1400x1400/69bcb17c-5aa6-4112-ab78-967da92a25a7.jpg" alt="Paradise">
+                    </div>
+                    <div class="release-info">
+                        <div class="release-year">Jun 2024</div>
+                        <h3 class="release-title">Paradise</h3>
+                        <div class="release-label">Black Rose Recordings &middot; w/ Joone</div>
+                        <div class="release-links">
+                            <a href="https://www.beatport.com/release/paradise/4524788" target="_blank">Beatport</a>
+                            <a href="https://open.spotify.com/album/1nVh5woP9Bgn8COTWpoRTC" target="_blank">Spotify</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="release-card reveal">
+                    <div class="release-artwork">
+                        <img src="https://geo-media.beatport.com/image_size/1400x1400/936b337e-7f26-4e3b-a6da-195779d90840.jpg" alt="&amp;techno EP">
+                    </div>
+                    <div class="release-info">
+                        <div class="release-year">May 2024</div>
+                        <h3 class="release-title">&amp;techno EP</h3>
+                        <div class="release-label">BAU_HAUS</div>
+                        <div class="release-links">
+                            <a href="https://www.beatport.com/release/techno-ep/5141967" target="_blank">Beatport</a>
+                            <a href="https://open.spotify.com/album/6z4JauedBfYmAeSe7ioTLu" target="_blank">Spotify</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="release-card reveal">
+                    <div class="release-artwork">
+                        <img src="https://geo-media.beatport.com/image_size/1400x1400/7a5f9e5c-c875-4a4d-adb5-71e7b8265d33.jpg" alt="Feel It / Want My Love">
+                    </div>
+                    <div class="release-info">
+                        <div class="release-year">Apr 2024</div>
+                        <h3 class="release-title">Feel It / Want My Love</h3>
+                        <div class="release-label">Automatik</div>
+                        <div class="release-links">
+                            <a href="https://www.beatport.com/release/feel-it/4508621" target="_blank">Beatport</a>
+                            <a href="https://open.spotify.com/album/71vvUoVuWA3mHpdnbhHY9b" target="_blank">Spotify</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="release-card reveal">
+                    <div class="release-artwork">
+                        <img src="https://geo-media.beatport.com/image_size/1400x1400/1b437a9e-d36a-4234-a148-41baf86cfa43.jpg" alt="Solitude">
+                    </div>
+                    <div class="release-info">
+                        <div class="release-year">Sep 2023</div>
+                        <h3 class="release-title">Solitude</h3>
+                        <div class="release-label">Automatik &middot; VA &ldquo;Interstellar VA&rdquo;</div>
+                        <div class="release-links">
+                            <a href="https://www.beatport.com/release/interstellar-va/4235950" target="_blank">Beatport</a>
+                            <a href="https://open.spotify.com/album/6Vi9wdOn0zUUkSIknNkAsM" target="_blank">Spotify</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="release-card reveal">
+                    <div class="release-artwork">
+                        <img src="https://geo-media.beatport.com/image_size/1400x1400/96f31e80-524b-4658-92bd-26264eec93d5.jpg" alt="Anomaly (CENKK Remix)">
+                    </div>
+                    <div class="release-info">
+                        <div class="release-year">Sep 2023</div>
+                        <h3 class="release-title">Anomaly (CENKK Remix)</h3>
+                        <div class="release-label">Awen Records &middot; Remix of Uschowa &amp; He&icirc;k</div>
+                        <div class="release-links">
+                            <a href="https://www.beatport.com/release/anomaly/4240970" target="_blank">Beatport</a>
+                            <a href="https://open.spotify.com/album/00FhUIGPbgcggR3FXEsmUc" target="_blank">Spotify</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="release-card reveal">
+                    <div class="release-artwork">
+                        <img src="https://geo-media.beatport.com/image_size/1400x1400/2935ad4e-f42b-4c33-a793-a9de6c6eaf86.jpg" alt="Feelings">
+                    </div>
+                    <div class="release-info">
+                        <div class="release-year">Sep 2023</div>
+                        <h3 class="release-title">Feelings</h3>
+                        <div class="release-label">Multinotes</div>
+                        <div class="release-links">
+                            <a href="https://www.beatport.com/track/feelings/18105437" target="_blank">Beatport</a>
+                            <a href="https://open.spotify.com/album/48uYvLsWYeAKzmAAIRuq11" target="_blank">Spotify</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="release-card reveal">
+                    <div class="release-artwork">
+                        <img src="https://geo-media.beatport.com/image_size/1400x1400/57e076c2-94d1-4ca4-9e87-d1cb2b365ce9.jpg" alt="Domine Dirige Nos">
+                    </div>
+                    <div class="release-info">
+                        <div class="release-year">Jul 2023</div>
+                        <h3 class="release-title">Domine Dirige Nos</h3>
+                        <div class="release-label">Borders Of Light &middot; VA &ldquo;Roundish 01&rdquo;</div>
+                        <div class="release-links">
+                            <a href="https://www.beatport.com/release/roundish-01/4188662" target="_blank">Beatport</a>
+                            <a href="https://open.spotify.com/album/2Gry4lSpQTK9duxdxlUghe" target="_blank">Spotify</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="release-card reveal">
+                    <div class="release-artwork">
+                        <img src="https://geo-media.beatport.com/image_size/1400x1400/20a13b3e-8176-4168-a612-4d052e24e45e.jpg" alt="ANL">
+                    </div>
+                    <div class="release-info">
+                        <div class="release-year">Feb 2023</div>
+                        <h3 class="release-title">ANL</h3>
+                        <div class="release-label">DESSERT &middot; Remixes by Alican &amp; Joone</div>
+                        <div class="release-links">
+                            <a href="https://www.beatport.com/release/anl/3999556" target="_blank">Beatport</a>
+                            <a href="https://open.spotify.com/album/799KRWhpF4kO5uq4NzZcKE" target="_blank">Spotify</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="release-card reveal">
+                    <div class="release-artwork">
+                        <img src="https://geo-media.beatport.com/image_size/1400x1400/46abfa68-6d10-4ead-83e4-eb5759dab2c3.jpg" alt="I Was Lost">
+                    </div>
+                    <div class="release-info">
+                        <div class="release-year">Apr 2022</div>
+                        <h3 class="release-title">I Was Lost</h3>
+                        <div class="release-label">Borders Of Light &middot; Remixes by Nandu &amp; Toto Chiavetta</div>
+                        <div class="release-links">
+                            <a href="https://www.beatport.com/release/i-was-lost/3706066" target="_blank">Beatport</a>
+                            <a href="https://open.spotify.com/album/4D6119Xtg1a4Ss0bSWxWcC" target="_blank">Spotify</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="release-card reveal">
+                    <div class="release-artwork">
+                        <img src="https://geo-media.beatport.com/image_size/1400x1400/f5e309b2-cd3c-4471-b3f5-1cd9b3014253.jpg" alt="Calling U">
+                    </div>
+                    <div class="release-info">
+                        <div class="release-year">Nov 2021</div>
+                        <h3 class="release-title">Calling U</h3>
+                        <div class="release-label">OMENI &middot; Remixes by Dogus Cihan</div>
+                        <div class="release-links">
+                            <a href="https://www.beatport.com/release/calling-u/3540164" target="_blank">Beatport</a>
+                            <a href="https://open.spotify.com/album/4rElZTPk0exVyjycC9Ojm5" target="_blank">Spotify</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="release-card reveal">
+                    <div class="release-artwork">
+                        <img src="https://i.scdn.co/image/ab67616d0000b273f213bd42c4a6daacb08b30c8" alt="The Room">
+                    </div>
+                    <div class="release-info">
+                        <div class="release-year">2020</div>
+                        <h3 class="release-title">The Room</h3>
+                        <div class="release-label">Single</div>
+                        <div class="release-links">
+                            <a href="https://open.spotify.com/album/3bdNq5fEKHQsOXTpOHvIR6" target="_blank">Spotify</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="music-platforms">
+                <span class="platform-label">Listen on</span>
+                <a href="https://open.spotify.com/artist/7is6F8lENDaS4DaNGFXSeu" target="_blank" class="platform-link">Spotify</a>
+                <a href="https://music.apple.com/us/artist/cenkk/1522091676" target="_blank" class="platform-link">Apple Music</a>
+                <a href="https://soundcloud.com/cenkk" target="_blank" class="platform-link">SoundCloud</a>
+                <a href="https://www.beatport.com/artist/cenkk/1018195" target="_blank" class="platform-link">Beatport</a>
+                <a href="https://www.traxsource.com/artist/641672/cenkk" target="_blank" class="platform-link">Traxsource</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shows -->
+    <section class="shows" id="shows">
+        <div class="section-inner">
+            <div class="section-label reveal">Live</div>
+            <h2 class="section-title reveal">Shows</h2>
+
+            <!-- UPCOMING -->
+            <div class="shows-group-label reveal">Upcoming</div>
+
+            <a href="https://ra.co/events/2359474" target="_blank" class="show-item reveal">
+                <div class="show-date">Fri 6 Mar 2026</div>
+                <div class="show-info">
+                    <div class="show-venue">Village Underground</div>
+                    <div class="show-city">London, UK</div>
+                    <div class="show-event">Henri Bergmann Invites: Sainte Vie (Live), CENKK, Pattn</div>
+                </div>
+                <div class="show-status upcoming">Tickets</div>
+            </a>
+
+            <a href="https://ra.co/events/2357757" target="_blank" class="show-item reveal">
+                <div class="show-date">Sat 4 Apr 2026</div>
+                <div class="show-info">
+                    <div class="show-venue">Ritter Butzke</div>
+                    <div class="show-city">Berlin, DE</div>
+                    <div class="show-event">Avaion w/ AVAION, Jil Tanner, CENKK</div>
+                </div>
+                <div class="show-status upcoming">Tickets</div>
+            </a>
+
+            <a href="https://ra.co/events/2363270" target="_blank" class="show-item reveal">
+                <div class="show-date">Sat 30 May 2026</div>
+                <div class="show-info">
+                    <div class="show-venue">E1</div>
+                    <div class="show-city">London, UK</div>
+                    <div class="show-event">Recondite (live) w/ Recondite, Lehar, CENKK</div>
+                </div>
+                <div class="show-status upcoming">Tickets</div>
+            </a>
+
+            <!-- PAST — 2025 -->
+            <div class="shows-group-label reveal">Past Shows</div>
+            <div class="shows-year-label reveal">2025</div>
+
+            <div class="show-item reveal">
+                <div class="show-date">Fri 5 Dec 2025</div>
+                <div class="show-info">
+                    <div class="show-venue">MODULE</div>
+                    <div class="show-city">Copenhagen, DK</div>
+                    <div class="show-event">CIRCUIT presents Enai (Afterlife, Siamese)</div>
+                </div>
+                <div class="show-status">Past</div>
+            </div>
+
+            <div class="show-item reveal">
+                <div class="show-date">Sat 22 Nov 2025</div>
+                <div class="show-info">
+                    <div class="show-venue">E1</div>
+                    <div class="show-city">London, UK</div>
+                    <div class="show-event">KAS:ST (Afterlife)</div>
+                </div>
+                <div class="show-status">Past</div>
+            </div>
+
+            <div class="show-item reveal">
+                <div class="show-date">Fri 15 Aug 2025</div>
+                <div class="show-info">
+                    <div class="show-venue">KOKO</div>
+                    <div class="show-city">London, UK</div>
+                    <div class="show-event">KOKO Electronic: Summer Party w/ Cedric Gervais</div>
+                </div>
+                <div class="show-status">Past</div>
+            </div>
+
+            <div class="show-item reveal">
+                <div class="show-date">Sat 9 Aug 2025</div>
+                <div class="show-info">
+                    <div class="show-venue">The Cross</div>
+                    <div class="show-city">London, UK</div>
+                    <div class="show-event">Secret Encounters</div>
+                </div>
+                <div class="show-status">Past</div>
+            </div>
+
+            <div class="show-item reveal">
+                <div class="show-date">Fri 11 Jul 2025</div>
+                <div class="show-info">
+                    <div class="show-venue">E1</div>
+                    <div class="show-city">London, UK</div>
+                    <div class="show-event">19:26 (Afterlife)</div>
+                </div>
+                <div class="show-status">Past</div>
+            </div>
+
+            <div class="show-item reveal">
+                <div class="show-date">Sat 3 May 2025</div>
+                <div class="show-info">
+                    <div class="show-venue">E1</div>
+                    <div class="show-city">London, UK</div>
+                    <div class="show-event">Lilly Palmer</div>
+                </div>
+                <div class="show-status sold-out">Sold Out</div>
+            </div>
+
+            <div class="show-item reveal">
+                <div class="show-date">Fri 21 Feb 2025</div>
+                <div class="show-info">
+                    <div class="show-venue">E1</div>
+                    <div class="show-city">London, UK</div>
+                    <div class="show-event">Deborah De Luca (Extended Set)</div>
+                </div>
+                <div class="show-status">Past</div>
+            </div>
+
+            <!-- PAST — 2024 -->
+            <div class="shows-year-label reveal">2024</div>
+
+            <div class="show-item reveal">
+                <div class="show-date">Sat 23 Nov 2024</div>
+                <div class="show-info">
+                    <div class="show-venue">Culture Box</div>
+                    <div class="show-city">Copenhagen, DK</div>
+                    <div class="show-event">Automatik</div>
+                </div>
+                <div class="show-status">Past</div>
+            </div>
+
+            <div class="show-item reveal">
+                <div class="show-date">Fri 18 Oct 2024</div>
+                <div class="show-info">
+                    <div class="show-venue">TBA — Eivissa Boat Venue</div>
+                    <div class="show-city">Amsterdam, NL</div>
+                    <div class="show-event">Multinotes Showcase ADE — Boat Party w/ Lehar, Musumeci</div>
+                </div>
+                <div class="show-status">Past</div>
+            </div>
+
+            <div class="show-item reveal">
+                <div class="show-date">Sat 31 Aug 2024</div>
+                <div class="show-info">
+                    <div class="show-venue">Basing House</div>
+                    <div class="show-city">London, UK</div>
+                    <div class="show-event">MIND HOUSE presents CENKK, Kate Moss, Yashar</div>
+                </div>
+                <div class="show-status">Past</div>
+            </div>
+
+            <div class="show-item reveal">
+                <div class="show-date">Sat 22 Jun 2024</div>
+                <div class="show-info">
+                    <div class="show-venue">MODULE</div>
+                    <div class="show-city">Copenhagen, DK</div>
+                    <div class="show-event">CIRCUIT</div>
+                </div>
+                <div class="show-status">Past</div>
+            </div>
+
+            <div class="show-item reveal">
+                <div class="show-date">Fri 7 Jun 2024</div>
+                <div class="show-info">
+                    <div class="show-venue">Ritter Butzke</div>
+                    <div class="show-city">Berlin, DE</div>
+                    <div class="show-event">House of Shimmy &amp; Friends</div>
+                </div>
+                <div class="show-status">Past</div>
+            </div>
+
+            <div class="show-item reveal">
+                <div class="show-date">Fri 31 May 2024</div>
+                <div class="show-info">
+                    <div class="show-venue">Colours Hoxton</div>
+                    <div class="show-city">London, UK</div>
+                    <div class="show-event">Parable presents: Leblanc (UK debut)</div>
+                </div>
+                <div class="show-status">Past</div>
+            </div>
+
+            <div class="show-item reveal">
+                <div class="show-date">Sat 20 Apr 2024</div>
+                <div class="show-info">
+                    <div class="show-venue">The Ton of Brix</div>
+                    <div class="show-city">London, UK</div>
+                    <div class="show-event">Mischief Managed presents: CENKK, Abstraal</div>
+                </div>
+                <div class="show-status">Past</div>
+            </div>
+
+            <div class="show-item reveal">
+                <div class="show-date">Fri 22 Mar 2024</div>
+                <div class="show-info">
+                    <div class="show-venue">E1</div>
+                    <div class="show-city">London, UK</div>
+                    <div class="show-event">Stella Bossi, Simina Grigoriu, Lino Fuso</div>
+                </div>
+                <div class="show-status">Past</div>
+            </div>
+
+            <div class="show-item reveal">
+                <div class="show-date">Sat 9 Mar 2024</div>
+                <div class="show-info">
+                    <div class="show-venue">Ritter Butzke</div>
+                    <div class="show-city">Berlin, DE</div>
+                    <div class="show-event">biskuwi w/ biskuwi, CENKK, Carl Bergé</div>
+                </div>
+                <div class="show-status">Past</div>
+            </div>
+
+            <div class="show-item reveal">
+                <div class="show-date">Fri 8 Mar 2024</div>
+                <div class="show-info">
+                    <div class="show-venue">MODULE</div>
+                    <div class="show-city">Copenhagen, DK</div>
+                    <div class="show-event">Boombastic X CENKK X Cipy X Baime</div>
+                </div>
+                <div class="show-status">Past</div>
+            </div>
+
+            <div class="show-item reveal">
+                <div class="show-date">Sat 3 Feb 2024</div>
+                <div class="show-info">
+                    <div class="show-venue">://about blank</div>
+                    <div class="show-city">Berlin, DE</div>
+                    <div class="show-event">DESSERT</div>
+                </div>
+                <div class="show-status">Past</div>
+            </div>
+
+            <!-- PAST — 2023 -->
+            <div class="shows-year-label reveal">2023</div>
+
+            <div class="show-item reveal">
+                <div class="show-date">Fri 8 Dec 2023</div>
+                <div class="show-info">
+                    <div class="show-venue">Ritter Butzke</div>
+                    <div class="show-city">Berlin, DE</div>
+                    <div class="show-event">Automatik w/ Henri Bergmann, Hardt Antoine, Paride Saraceni</div>
+                </div>
+                <div class="show-status">Past</div>
+            </div>
+
+            <div class="show-item reveal">
+                <div class="show-date">Sat 8 Apr 2023</div>
+                <div class="show-info">
+                    <div class="show-venue">://about blank</div>
+                    <div class="show-city">Berlin, DE</div>
+                    <div class="show-event">DESSERT w/ Marcal &amp; Toto Chiavetta</div>
+                </div>
+                <div class="show-status">Past</div>
+            </div>
+
+            <div class="show-item reveal">
+                <div class="show-date">Fri 10 Mar 2023</div>
+                <div class="show-info">
+                    <div class="show-venue">KitKatClub</div>
+                    <div class="show-city">Berlin, DE</div>
+                    <div class="show-event">Revolver Party</div>
+                </div>
+                <div class="show-status">Past</div>
+            </div>
+
+            <div class="show-item reveal">
+                <div class="show-date">Sun 1 Jan 2023</div>
+                <div class="show-info">
+                    <div class="show-venue">E1</div>
+                    <div class="show-city">London, UK</div>
+                    <div class="show-event">NYD w/ I Hate Models, Helena Hauff, Ellen Allien, LSDXOXO + more</div>
+                </div>
+                <div class="show-status">Past</div>
+            </div>
+
+            <a href="https://ra.co/dj/cenkk/past-events" target="_blank" class="shows-ra-link reveal">Full history on Resident Advisor →</a>
+
+            <p class="shows-note reveal">
+                For booking enquiries, please contact <a href="mailto:alexandra@joystick-agency.com">Joystick Agency</a>.
+            </p>
+        </div>
+    </section>
+
+    <!-- Gallery -->
+    <section id="gallery">
+        <div class="section-inner">
+            <div class="section-label reveal" style="padding: 0 5vw;">Visual</div>
+            <h2 class="section-title reveal" style="padding: 0 5vw;">Gallery</h2>
+
+            <div class="gallery-scroll-wrapper">
+                <div class="gallery-grid" id="galleryScroll">
+                    <div class="gallery-item tall">
+                        <img src="photo-columns.jpg" alt="CENKK by concrete columns">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="photo-corridor.jpg" alt="CENKK walking through corridor">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="photo-stairs-night.jpg" alt="CENKK approaching stairs at night">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="photo-stairs-dark.jpg" alt="CENKK on dark stairway">
+                    </div>
+                    <div class="gallery-item wide">
+                        <img src="photo-iceland.jpg" alt="CENKK on black sand beach">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="photo-dunes.jpg" alt="CENKK in coastal dunes">
+                    </div>
+                    <div class="gallery-item tall">
+                        <img src="photo-studio.jpg" alt="CENKK studio portrait">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="photo-motion-blur.jpg" alt="CENKK motion blur">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="photo-walking.jpg" alt="CENKK walking overhead view">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="photo-rustic.jpg" alt="CENKK by rustic wall">
+                    </div>
+                </div>
+            </div>
+            <div class="gallery-nav reveal">
+                <button id="galleryPrev" aria-label="Previous">&#8249;</button>
+                <button id="galleryNext" aria-label="Next">&#8250;</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Press -->
+    <section class="press" id="press">
+        <div class="section-inner">
+            <div class="section-label reveal">Press</div>
+            <h2 class="section-title reveal">Electronic Press Kit</h2>
+
+            <div class="press-quotes reveal">
+                <div class="quote-card">
+                    <p class="quote-text">"One of the rising stars in the electronic music scene, supported by the likes of Solomun, Adriatique, &Acirc;me, and many more."</p>
+                    <div class="quote-source">Deep House Amsterdam</div>
+                </div>
+                <div class="quote-card">
+                    <p class="quote-text">"CENKK balances dancefloor pressure and cinematic detail with a sound that's entirely his own."</p>
+                    <div class="quote-source">Feeling Sounds</div>
+                </div>
+                <div class="quote-card">
+                    <p class="quote-text">"Building identity through groove and atmosphere &mdash; a unique voice in electronic music, literally and figuratively."</p>
+                    <div class="quote-source">Techno Station</div>
+                </div>
+            </div>
+
+            <div class="press-features reveal">
+                <h3>Featured In</h3>
+                <div class="feature-list">
+                    <a href="https://dancingastronaut.com/2025/09/dancing-astronauts-new-music-friday-adam-ten-rafael-genesi-henri-bergmann-cenkk-villa-and-more-september-12-2025/" target="_blank" class="feature-item">
+                        <span class="outlet">Dancing Astronaut</span>
+                        <span class="type">New Music Friday</span>
+                    </a>
+                    <a href="https://www.deephouseamsterdam.com/london/deep-house-amsterdam-interview-with-cenkk/" target="_blank" class="feature-item">
+                        <span class="outlet">Deep House Amsterdam</span>
+                        <span class="type">Interview</span>
+                    </a>
+                    <a href="https://www.technostation.tv/cenkk-on-building-identity-through-groove-and-atmosphere/" target="_blank" class="feature-item">
+                        <span class="outlet">Techno Station</span>
+                        <span class="type">Feature</span>
+                    </a>
+                    <a href="https://electronicgroove.com/series/premieres/cenkk-let-me-tell-you-bau_haus/" target="_blank" class="feature-item">
+                        <span class="outlet">Electronic Groove</span>
+                        <span class="type">Premiere</span>
+                    </a>
+                    <a href="https://www.feeling-sounds.com/press/cenkk-balances-dancefloor-pressure-and-cinematic-detail-on-moodyverse/" target="_blank" class="feature-item">
+                        <span class="outlet">Feeling Sounds</span>
+                        <span class="type">Press Release</span>
+                    </a>
+                    <a href="https://plus.inflyteapp.com/lets-talk-cenkk/" target="_blank" class="feature-item">
+                        <span class="outlet">Inflyte Plus</span>
+                        <span class="type">Interview</span>
+                    </a>
+                </div>
+            </div>
+
+            <a href="#contact" class="epk-download reveal">
+                <span>Request Full EPK</span>
+                <span>&rarr;</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+        <div class="section-inner">
+            <div class="section-label reveal">Connect</div>
+            <h2 class="section-title reveal">Get in Touch</h2>
+
+            <div class="contact-grid reveal">
+                <div class="contact-block">
+                    <h3>Joystick Agency</h3>
+                    <div class="contact-role">Booking &amp; Management</div>
+                    <div class="contact-detail">
+                        <a href="mailto:alexandra@joystick-agency.com">alexandra@joystick-agency.com</a>
+                    </div>
+                    <div class="contact-detail">
+                        <a href="https://www.joystick-agency.com/cenkk" target="_blank">joystick-agency.com</a>
+                    </div>
+                </div>
+                <div class="contact-block">
+                    <h3>Jukebox PR</h3>
+                    <div class="contact-role">Press &amp; PR</div>
+                    <div class="contact-detail">
+                        <a href="mailto:pete@jukeboxpr.co.uk">pete@jukeboxpr.co.uk</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="social-links reveal">
+                <a href="https://www.instagram.com/cenkkmusic/" target="_blank" class="social-link">Instagram</a>
+                <a href="https://soundcloud.com/cenkk" target="_blank" class="social-link">SoundCloud</a>
+                <a href="https://open.spotify.com/artist/7is6F8lENDaS4DaNGFXSeu" target="_blank" class="social-link">Spotify</a>
+                <a href="https://www.beatport.com/artist/cenkk/1018195" target="_blank" class="social-link">Beatport</a>
+                <a href="https://ra.co/dj/cenkk" target="_blank" class="social-link">Resident Advisor</a>
+                <a href="https://music.apple.com/us/artist/cenkk/1522091676" target="_blank" class="social-link">Apple Music</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-left">CENKK</div>
+        <div class="footer-right">&copy; 2026 CENKK. All rights reserved.</div>
+    </footer>
+
+    <!-- Music Player -->
+    <div class="music-player" id="musicPlayer">
+        <div class="music-player-inner">
+            <button class="music-player-toggle" id="playerPlayPause" aria-label="Play/Pause">&#9654;</button>
+            <div class="music-player-info">
+                <div class="music-player-title" id="playerTitle">Feel It</div>
+                <div class="music-player-artist">CENKK</div>
+            </div>
+            <div class="music-player-waveform">
+                <canvas id="waveformCanvas"></canvas>
+            </div>
+            <div class="music-player-time" id="playerTime">0:00</div>
+            <div class="music-player-tracks">
+                <button class="music-player-track-btn" id="playerPrev" aria-label="Previous track">&#8249;</button>
+                <button class="music-player-track-btn" id="playerNext" aria-label="Next track">&#8250;</button>
+            </div>
+            <button class="music-player-close" id="playerClose" aria-label="Close player">&times;</button>
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
+        <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous">&#8249;</button>
+        <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next">&#8250;</button>
+        <img class="lightbox-img" id="lightboxImg" src="" alt="">
+        <div class="lightbox-counter" id="lightboxCounter"></div>
+    </div>
+
+    <script>
+        // ===== NAV =====
+        const navbar = document.getElementById('navbar');
+        const navLinks = document.getElementById('navLinks');
+
+        function toggleNav() {
+            navLinks.classList.toggle('open');
+            document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
+        }
+        function closeNav() {
+            navLinks.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        // ===== PARTICLE CANVAS (Hero) =====
+        (function() {
+            const canvas = document.getElementById('particleCanvas');
+            const ctx = canvas.getContext('2d');
+            let w, h, particles = [], mouse = { x: -1000, y: -1000 };
+            const PARTICLE_COUNT = 80;
+            const CONNECTION_DIST = 150;
+
+            function resize() {
+                const hero = canvas.parentElement;
+                w = canvas.width = hero.offsetWidth;
+                h = canvas.height = hero.offsetHeight;
+            }
+
+            function createParticles() {
+                particles = [];
+                for (let i = 0; i < PARTICLE_COUNT; i++) {
+                    particles.push({
+                        x: Math.random() * w,
+                        y: Math.random() * h,
+                        vx: (Math.random() - 0.5) * 0.4,
+                        vy: (Math.random() - 0.5) * 0.4,
+                        r: Math.random() * 1.5 + 0.5,
+                        alpha: Math.random() * 0.5 + 0.2
+                    });
+                }
+            }
+
+            function drawParticles(time) {
+                ctx.clearRect(0, 0, w, h);
+                const pulse = Math.sin(time * 0.001) * 0.15 + 0.85;
+
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    // Soft bounce
+                    if (p.x < 0 || p.x > w) p.vx *= -1;
+                    if (p.y < 0 || p.y > h) p.vy *= -1;
+
+                    // Mouse repulsion
+                    const dx = p.x - mouse.x;
+                    const dy = p.y - mouse.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120) {
+                        const force = (120 - dist) / 120 * 0.02;
+                        p.vx += dx * force;
+                        p.vy += dy * force;
+                    }
+
+                    // Dampen velocity
+                    p.vx *= 0.99;
+                    p.vy *= 0.99;
+
+                    // Draw particle
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r * pulse, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(255,255,255,' + (p.alpha * pulse) + ')';
+                    ctx.fill();
+
+                    // Draw connections
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const p2 = particles[j];
+                        const ddx = p.x - p2.x;
+                        const ddy = p.y - p2.y;
+                        const d = Math.sqrt(ddx * ddx + ddy * ddy);
+                        if (d < CONNECTION_DIST) {
+                            const alpha = (1 - d / CONNECTION_DIST) * 0.12 * pulse;
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.strokeStyle = 'rgba(255,255,255,' + alpha + ')';
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(drawParticles);
+            }
+
+            canvas.parentElement.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                mouse.x = e.clientX - rect.left;
+                mouse.y = e.clientY - rect.top;
+            });
+            canvas.parentElement.addEventListener('mouseleave', () => {
+                mouse.x = -1000; mouse.y = -1000;
+            });
+
+            window.addEventListener('resize', () => { resize(); createParticles(); });
+            resize();
+            createParticles();
+            requestAnimationFrame(drawParticles);
+        })();
+
+        // ===== SCROLL: Nav, Parallax, Reveals =====
+        (function() {
+            const heroImg = document.getElementById('heroVideo');
+            let ticking = false;
+
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        const scrollY = window.scrollY;
+
+                        // Nav
+                        navbar.classList.toggle('scrolled', scrollY > 80);
+
+                        // Hero parallax
+                        if (scrollY < window.innerHeight) {
+                            heroImg.style.transform = 'translateY(' + (scrollY * 0.3) + 'px) scale(' + (1 + scrollY * 0.0002) + ')';
+                        }
+
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }, { passive: true });
+
+            // Reveal observer
+            const reveals = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+            reveals.forEach(el => observer.observe(el));
+        })();
+
+        // ===== GALLERY: Horizontal Filmstrip Drag Scroll =====
+        (function() {
+            const scroll = document.getElementById('galleryScroll');
+            let isDown = false, startX, scrollLeft, clickPrevented = false;
+
+            scroll.addEventListener('mousedown', (e) => {
+                isDown = true;
+                clickPrevented = false;
+                startX = e.pageX - scroll.offsetLeft;
+                scrollLeft = scroll.scrollLeft;
+                scroll.style.scrollBehavior = 'auto';
+            });
+            scroll.addEventListener('mouseleave', () => { isDown = false; });
+            scroll.addEventListener('mouseup', () => { isDown = false; scroll.style.scrollBehavior = 'smooth'; });
+            scroll.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - scroll.offsetLeft;
+                const walk = (x - startX) * 1.5;
+                if (Math.abs(walk) > 5) clickPrevented = true;
+                scroll.scrollLeft = scrollLeft - walk;
+            });
+
+            // Prevent click on gallery items after drag
+            scroll.addEventListener('click', (e) => {
+                if (clickPrevented) { e.stopPropagation(); e.preventDefault(); }
+            }, true);
+
+            // Arrow nav
+            const scrollAmount = 400;
+            document.getElementById('galleryPrev').addEventListener('click', () => {
+                scroll.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            });
+            document.getElementById('galleryNext').addEventListener('click', () => {
+                scroll.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            });
+        })();
+
+        // ===== LIGHTBOX =====
+        (function() {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            const lightboxCounter = document.getElementById('lightboxCounter');
+            const galleryItems = document.querySelectorAll('.gallery-item img');
+            const images = Array.from(galleryItems).map(img => img.src);
+            let currentIndex = 0;
+
+            function openLightbox(index) {
+                currentIndex = index;
+                updateLightbox();
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            function updateLightbox() {
+                lightboxImg.style.opacity = '0';
+                lightboxImg.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    lightboxImg.src = images[currentIndex];
+                    lightboxImg.alt = galleryItems[currentIndex].alt;
+                    lightboxCounter.textContent = (currentIndex + 1) + ' / ' + images.length;
+                    lightboxImg.style.opacity = '1';
+                    lightboxImg.style.transform = 'scale(1)';
+                }, 150);
+            }
+            function nextImage() { currentIndex = (currentIndex + 1) % images.length; updateLightbox(); }
+            function prevImage() { currentIndex = (currentIndex - 1 + images.length) % images.length; updateLightbox(); }
+
+            galleryItems.forEach((img, i) => {
+                img.parentElement.addEventListener('click', () => openLightbox(i));
+            });
+            document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+            document.getElementById('lightboxNext').addEventListener('click', nextImage);
+            document.getElementById('lightboxPrev').addEventListener('click', prevImage);
+            lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+            document.addEventListener('keydown', (e) => {
+                if (!lightbox.classList.contains('active')) return;
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowRight') nextImage();
+                if (e.key === 'ArrowLeft') prevImage();
+            });
+            let touchStartX = 0;
+            lightbox.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+            lightbox.addEventListener('touchend', (e) => {
+                const diff = touchStartX - e.changedTouches[0].screenX;
+                if (Math.abs(diff) > 50) { diff > 0 ? nextImage() : prevImage(); }
+            }, { passive: true });
+        })();
+
+        // ===== MUSIC PLAYER (SoundCloud Widget API — Trax Playlist) =====
+        (function() {
+            const player = document.getElementById('musicPlayer');
+            const playPauseBtn = document.getElementById('playerPlayPause');
+            const titleEl = document.getElementById('playerTitle');
+            const timeEl = document.getElementById('playerTime');
+            const waveCanvas = document.getElementById('waveformCanvas');
+            const waveCtx = waveCanvas.getContext('2d');
+
+            const PLAYLIST_URL = 'https://soundcloud.com/cenkk/sets/trax';
+            let currentTrack = 0;
+            let trackCount = 0;
+            let isPlaying = false;
+            let playerShown = false;
+            let widgetReady = false;
+
+            // Generate waveform data for visual display
+            const waveformData = [];
+            for (let i = 0; i < 100; i++) {
+                waveformData.push(Math.random() * 0.6 + 0.2 + Math.sin(i * 0.15) * 0.15);
+            }
+
+            function resizeWaveCanvas() {
+                const rect = waveCanvas.parentElement.getBoundingClientRect();
+                waveCanvas.width = rect.width * window.devicePixelRatio;
+                waveCanvas.height = rect.height * window.devicePixelRatio;
+                waveCtx.scale(window.devicePixelRatio, window.devicePixelRatio);
+                drawWaveform(0);
+            }
+
+            function drawWaveform(progress) {
+                const w = waveCanvas.width / window.devicePixelRatio;
+                const h = waveCanvas.height / window.devicePixelRatio;
+                waveCtx.clearRect(0, 0, w, h);
+                const barCount = waveformData.length;
+                const barWidth = w / barCount;
+                for (let i = 0; i < barCount; i++) {
+                    const val = waveformData[i];
+                    const barH = val * h * 0.85;
+                    const x = i * barWidth;
+                    const y = (h - barH) / 2;
+                    const isPast = i / barCount < progress;
+                    waveCtx.fillStyle = isPast ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.15)';
+                    waveCtx.fillRect(x + 0.5, y, barWidth - 1, barH);
+                }
+            }
+
+            function formatTime(s) {
+                if (!s || isNaN(s)) return '0:00';
+                const m = Math.floor(s / 60);
+                const sec = Math.floor(s % 60);
+                return m + ':' + (sec < 10 ? '0' : '') + sec;
+            }
+
+            function showPlayer() {
+                if (!playerShown) {
+                    player.classList.add('visible');
+                    playerShown = true;
+                    resizeWaveCanvas();
+                }
+            }
+
+            // Create the iframe widget once with the full playlist
+            function initPlaylist() {
+                if (document.getElementById('scWidget')) return;
+                const iframe = document.createElement('iframe');
+                iframe.id = 'scWidget';
+                iframe.style.display = 'none';
+                iframe.allow = 'autoplay';
+                const encoded = encodeURIComponent(PLAYLIST_URL);
+                iframe.src = 'https://w.soundcloud.com/player/?url=' + encoded + '&auto_play=false&show_artwork=false&visual=false';
+                document.body.appendChild(iframe);
+
+                // Load the SC Widget API script
+                const script = document.createElement('script');
+                script.src = 'https://w.soundcloud.com/player/api.js';
+                script.onload = () => bindWidget();
+                document.body.appendChild(script);
+            }
+
+            function bindWidget() {
+                const widget = SC.Widget(document.getElementById('scWidget'));
+                window.scWidgetAPI = widget;
+
+                widget.bind(SC.Widget.Events.READY, () => {
+                    widgetReady = true;
+                    // Get the number of tracks in the playlist
+                    widget.getSounds((sounds) => {
+                        trackCount = sounds.length;
+                        if (sounds.length > 0) {
+                            titleEl.textContent = cleanTitle(sounds[0].title);
+                        }
+                    });
+                    widget.getDuration((dur) => {
+                        timeEl.textContent = '0:00 / ' + formatTime(dur / 1000);
+                    });
+                });
+
+                widget.bind(SC.Widget.Events.PLAY_PROGRESS, (data) => {
+                    const current = data.currentPosition / 1000;
+                    widget.getDuration((dur) => {
+                        const total = dur / 1000;
+                        timeEl.textContent = formatTime(current) + ' / ' + formatTime(total);
+                        drawWaveform(current / total);
+                    });
+                });
+
+                widget.bind(SC.Widget.Events.PLAY, () => {
+                    isPlaying = true;
+                    playPauseBtn.innerHTML = '&#9646;&#9646;';
+                    // Update current track index and title
+                    widget.getCurrentSoundIndex((idx) => {
+                        currentTrack = idx;
+                        widget.getCurrentSound((sound) => {
+                            if (sound) titleEl.textContent = cleanTitle(sound.title);
+                        });
+                    });
+                });
+
+                widget.bind(SC.Widget.Events.PAUSE, () => {
+                    isPlaying = false;
+                    playPauseBtn.innerHTML = '&#9654;';
+                });
+
+                widget.bind(SC.Widget.Events.FINISH, () => {
+                    // Widget auto-advances in playlist mode
+                    // Update track info when next track starts
+                    widget.getCurrentSoundIndex((idx) => {
+                        currentTrack = idx;
+                        widget.getCurrentSound((sound) => {
+                            if (sound) titleEl.textContent = cleanTitle(sound.title);
+                        });
+                    });
+                });
+            }
+
+            function cleanTitle(title) {
+                // Remove common prefixes like "PREMIERE: " or "premiere | " and artist names
+                return title
+                    .replace(/^PREMIERE:\s*/i, '')
+                    .replace(/^premiere\s*\|\s*/i, '')
+                    .replace(/^FREE DL:\s*/i, '')
+                    .replace(/^CENKK\s*[-–—]\s*/i, '')
+                    .replace(/^Cenkk\s*[-–—]\s*/i, '')
+                    .replace(/^Cenkk\s*[-–—]\s*/i, '')
+                    .trim();
+            }
+
+            function togglePlay() {
+                if (!widgetReady) {
+                    initPlaylist();
+                    showPlayer();
+                    // Wait for widget to be ready, then play
+                    const waitAndPlay = setInterval(() => {
+                        if (widgetReady && window.scWidgetAPI) {
+                            clearInterval(waitAndPlay);
+                            window.scWidgetAPI.play();
+                        }
+                    }, 300);
+                    return;
+                }
+                window.scWidgetAPI.isPaused((paused) => {
+                    if (paused) {
+                        window.scWidgetAPI.play();
+                    } else {
+                        window.scWidgetAPI.pause();
+                    }
+                });
+            }
+
+            // Wire up controls
+            playPauseBtn.addEventListener('click', togglePlay);
+
+            document.getElementById('playerPrev').addEventListener('click', () => {
+                if (!widgetReady) return;
+                window.scWidgetAPI.prev();
+                // Small delay to let the widget switch tracks
+                setTimeout(() => {
+                    window.scWidgetAPI.getCurrentSoundIndex((idx) => {
+                        currentTrack = idx;
+                        window.scWidgetAPI.getCurrentSound((sound) => {
+                            if (sound) titleEl.textContent = cleanTitle(sound.title);
+                        });
+                    });
+                    window.scWidgetAPI.getDuration((dur) => {
+                        timeEl.textContent = '0:00 / ' + formatTime(dur / 1000);
+                    });
+                }, 500);
+            });
+
+            document.getElementById('playerNext').addEventListener('click', () => {
+                if (!widgetReady) return;
+                window.scWidgetAPI.next();
+                setTimeout(() => {
+                    window.scWidgetAPI.getCurrentSoundIndex((idx) => {
+                        currentTrack = idx;
+                        window.scWidgetAPI.getCurrentSound((sound) => {
+                            if (sound) titleEl.textContent = cleanTitle(sound.title);
+                        });
+                    });
+                    window.scWidgetAPI.getDuration((dur) => {
+                        timeEl.textContent = '0:00 / ' + formatTime(dur / 1000);
+                    });
+                }, 500);
+            });
+
+            document.getElementById('playerClose').addEventListener('click', () => {
+                if (window.scWidgetAPI) window.scWidgetAPI.pause();
+                isPlaying = false;
+                playPauseBtn.innerHTML = '&#9654;';
+                player.classList.remove('visible');
+                playerShown = false;
+            });
+
+            // Click waveform to seek
+            waveCanvas.parentElement.addEventListener('click', (e) => {
+                if (!window.scWidgetAPI) return;
+                const rect = waveCanvas.parentElement.getBoundingClientRect();
+                const progress = (e.clientX - rect.left) / rect.width;
+                window.scWidgetAPI.getDuration((dur) => {
+                    window.scWidgetAPI.seekTo(dur * progress);
+                });
+            });
+            waveCanvas.parentElement.style.cursor = 'pointer';
+
+            // Show player when user scrolls past the music section
+            const musicSection = document.getElementById('music');
+            const musicObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting && window.scrollY > 400 && !playerShown) {
+                        showPlayer();
+                        initPlaylist();
+                    }
+                });
+            }, { threshold: 0 });
+            musicObserver.observe(musicSection);
+
+            window.addEventListener('resize', resizeWaveCanvas);
+        })();
+    </script>
+</body>
+</html>
